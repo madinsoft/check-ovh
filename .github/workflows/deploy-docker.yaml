@@ -23,3 +23,6 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-whale:latest
 
+      - name: Déployer l image sur Kubernetes
+        run: |
+          kubectl apply -f hello.yaml  -n hello-app --kubeconfig=kubeconfig.yaml 

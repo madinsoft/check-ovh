@@ -13,6 +13,9 @@ docker run -d -p 80:80 366q3ao.c1.gra9.container-registry.ovh.net/my-project/hel
 curl -LO https://dl.k8s.io/release/v1.29.3/bin/linux/amd64/kubectl
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
+nom : test_ocl
+
+
 chmod +x kubectl
 mkdir -p ~/.local/bin
 mv ./kubectl ~/.local/bin/kubectl
