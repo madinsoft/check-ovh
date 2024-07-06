@@ -1,0 +1,66 @@
+image: 3366q3ao.c1.gra9.container-registry.ovh.net/my-project/hello-ovh:1.0.0
+service: hello-world
+api k8: yu61gm.c1.gra7.k8s.ovh.net
+node: yu61gm.nodes.c1.gra7.k8s.ovh.net
+
+
+docker build --tag 3366q3ao.c1.gra9.container-registry.ovh.net/my-project/hello-ovh:1.0.0 .
+docker login 3366q3ao.c1.gra9.container-registry.ovh.net
+AFKCsVHHGB 6nt59870iH14a2v3
+docker push 3366q3ao.c1.gra9.container-registry.ovh.net/my-project/hello-ovh:1.0.0
+docker pull 3366q3ao.c1.gra9.container-registry.ovh.net/my-project/hello-ovh:1.0.0
+docker run -d -p 80:80 366q3ao.c1.gra9.container-registry.ovh.net/my-project/hello-ovh:1.0.0
+curl -LO https://dl.k8s.io/release/v1.29.3/bin/linux/amd64/kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+
+chmod +x kubectl
+mkdir -p ~/.local/bin
+mv ./kubectl ~/.local/bin/kubectl
+export PATH=$PATH:/home/patrick/.local/bin
+kubectl version --client
+
+export KUBECONFIG=/Users/myuser/.kube/my-test-cluster.yml
+
+kubectl cluster-info
+
+kubectl create ns hello-app
+kubectl apply -f hello.yaml -n hello-app
+kubectl get pods -n hello-app -l app=hello-world
+kubectl get deploy -n hello-app -l app=hello-world
+kubectl get services -n hello-app -l app=hello-world
+export SERVICE_URL=$(kubectl get svc hello-world -n hello-app -o jsonpath='{.status.loadBalancer.ingress[].ip}')
+
+kubectl apply -f hello.yaml -n hello-app
+
+kubectl set image deployment/hello-world-deployment hello-world=3366q3ao.c1.gra9.container-registry.ovh.net/my-project/hello-ovh:1.0.0 -n hello-app
+kubectl rollout status deployment/hello-world-deployment -n hello-app
+
+kubectl delete ns hello-app
+kubectl set deployment nom-service --replicas=0
+kubectl delete deployment nom-service
+
+kubectl delete service hello-world -n hello-app
+kubectl get services -l app=hello-world -n hello-app
+kubectl get deployments -n hello-app -l app=hello-world
+kubectl get pods -n hello-app -l app=hello-world
+$ echo "http://$SERVICE_URL/"
+http://135.125.83.30/
+
+.github/workflows/build-and-deploy.yml
+
+
+on: [push]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy my nice code
+    steps:
+    - name: Deploy to OVH hosting
+      uses: pitscher/ovh-deploy-hosting-action@v1
+      env:
+        OVH_HOSTING_USER: ${{ secrets.OVH_HOSTING_USER }}
+        OVH_HOSTING_PASSWORD: ${{ secrets.OVH_HOSTING_PASSWORD }}
+        OVH_HOSTING_DOMAIN: ssh.clusterXXX.hosting.ovh.net
+        REPOSITORY_NAME: my-repo
+        REPOSITORY_URL: https://github.com/me/my-repo.git
