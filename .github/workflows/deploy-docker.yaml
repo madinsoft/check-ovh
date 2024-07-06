@@ -23,8 +23,12 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-whale:2.0.0
 
+
+
       - name: Generate Kubeconfig
-        run: echo ${{ secrets.KUBECONFIG }} | base64 -d > kubeconfig.yaml
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: echo "$KUBECONFIG" > kubeconfig.yaml
 
       - name: Afficher le contenu de kubeconfig.yaml
         run: cat kubeconfig.yaml 
