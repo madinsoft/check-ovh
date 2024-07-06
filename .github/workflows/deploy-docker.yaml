@@ -18,11 +18,19 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/docker-whale:latest .  
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/docker-whale:2.0.0 .  
 
       - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-whale:latest
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/docker-whale:2.0.0
 
+      - name: Generate Kubeconfig
+        run: echo ${{ secrets.KUBECONFIG }} > kubeconfig.yaml 
+    
       - name: Déployer l image sur Kubernetes
+        run: kubectl apply -f hello.yaml  -n hello-app --kubeconfig=kubeconfig.yaml 
+
+    
+      - name: Clean-Up
         run: |
-          kubectl apply -f hello.yaml  -n hello-app --kubeconfig=kubeconfig.yaml 
+          rm kubeconfig.yaml
+

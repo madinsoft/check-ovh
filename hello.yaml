@@ -32,6 +32,6 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: arkasys/docker-whale:latest
+        image: arkasys/docker-whale:2.0.0
         ports:
         - containerPort: 80
